@@ -1,6 +1,14 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\src",
+    "\\src\\Backend\\config",
+    "\\src\\Backend\\controllers",
+    "\\src\\Backend\\middleware",
+    "\\src\\Backend\\models",
+    "\\src\\Backend\\routes",
+    "\\src\\Components"
   ],
+  "SelectedNode": "\\src\\Components\\Register.js",
   "PreviewInSolutionExplorer": false
 }
