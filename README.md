@@ -1,4 +1,6 @@
 # Fuelinator
+![image](https://user-images.githubusercontent.com/61824926/220138518-e1ddd25b-ccad-4a16-8c38-44c6798e7982.png)
+
 <b><i>Don't Pay Fuelish Prices!</i></b>
 
 This app, will find you the cheapest fuel prices in your location, or search for a location to find their cheapest prices!
