@@ -29,6 +29,6 @@ Next right click inside the folder and click open in CMD, once it opens type:<br
 <b>git clone https://github.com/CianHession/Fuelish_Prices</b>
 
 Once that finishes, you will have to type: <br>
-<b> cd fuelish-prices</b><br>
+<b> cd fuelinator</b><br>
 <b> npm install</b><br>
 <b> npm start</b>
