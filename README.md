@@ -9,9 +9,11 @@
 <hr>
 
 ## What is Fuelinator?
-Fuelinator is a React.js app, which finds you the cheapest fuel prices in your location, or any location you search for.
+Fuelinator is a React.js app, which finds you the cheapest fuel prices in Ireland with possible expansion of any location you search for.
 
-You can register and log in as a user in order to submit updated fuel prices, you will be required to type the fuel prices, as-well as submitting a photo proving the prices, which then will be reviewed and accepted.
+Fuelinator will use the Google Maps API and fuel APIS in Ireland.
+
+You will need to create an account to use the Fuelinator, this can be done on launch of the app.
 
 The project idea was made in response to the global rise in fuel prices over the past year.
 
@@ -32,3 +34,7 @@ Once that finishes, you will have to type: <br>
 <b> cd fuelinator</b><br>
 <b> npm install</b><br>
 <b> npm start</b>
+
+And there you go!
+
+Please leave me feedback at my email if you have any suggestions or questions.
