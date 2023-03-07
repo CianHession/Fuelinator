@@ -1,10 +1,10 @@
 import React from 'react';
-import FuelPriceFinder from './FuelPriceFinder';
+import Fuelinator from './Fuelinator';
 
 function App() {
     return (
         <div>
-            <FuelPriceFinder />
+            <Fuelinator />
         </div>
     );
 }
