@@ -28,7 +28,7 @@ Git Download: https://git-scm.com/downloads
 
 In order to clone the repo, I would suggest creating a new folder somewhere on your computer, and open it.<br>
 Next right click inside the folder and click open in CMD, once it opens type:<br>
-<b>git clone https://github.com/CianHession/Fuelish_Prices</b>
+<b>git clone https://github.com/CianHession/Fuelinator</b>
 
 Once that finishes, you will have to type: <br>
 <b> cd fuelinator</b><br>
