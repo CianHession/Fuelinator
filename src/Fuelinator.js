@@ -7,15 +7,18 @@ function Fuelinator() {
     const [activeMarker, setActiveMarker] = useState(null);
     const [activeStation, setActiveStation] = useState(null);
 
-    const mapStyles = [{
-        featureType: "poi", elementType: "labels", stylers: [{ visibility: "off" }],
-    },
+    const mapStyles = [
+        {
+            featureType: "poi",
+            elementType: "labels",
+            stylers: [{ visibility: "off" }],
+        },
     ];
 
     useEffect(() => {
         async function fetchData() {
             const response = await fetch(
-                `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=53.1424,-7.6921&radius=50000&type=gas_station&key=AIzaSyBzE-baddsffMdIHJMehzzSHBimTssLOUo`
+                `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=53.1424,-7.6921&radius=50000&type=gas_station&key=${process.env.REACT_APP_API_KEY}`
             );
             const data = await response.json();
             setStations(data.results);
@@ -67,43 +70,39 @@ function Fuelinator() {
                     </ul>
                 </div>
             </nav>
-            <Map
-                google={window.google}
-                initialCenter={{ lat: 53.3498, lng: -6.2603 }}
-                style={{ height: "100%", position: "relative", width: "100%" }}
-                className={"map"}
-                zoom={8}
-                styles={mapStyles}
-                onClick={handleMapClick}
-            >
-                {stations.map((station) => (
-                    <Marker
-                        key={station.id}
-                        position={station.geometry.location}
-                        onClick={handleMarkerClick}
-                        station={station}
-                        icon={{
-                            url: "https://maps.google.com/mapfiles/ms/icons/red-dot.png",
-                            scaledSize: new window.google.maps.Size(40, 40),
-                        }}
-                        label={{
-                            text: station.name,
-                            fontSize: "16px",
-                            fontWeight: "bold",
-                            color: "white",
-                        }}
-                    />
-                ))}
-                <InfoWindow marker={activeMarker} visible={!!activeMarker}>
-                    <div>
-                        <h4>{activeStation?.name}</h4>
-                        <p>{activeStation?.vicinity}</p>
-                        <p>Rating: {activeStation?.rating}</p>
-                        <p>Open now: {activeStation?.opening_hours?.open_now ? "Yes" : "No"}</p>
-                    </div>
-                </InfoWindow>
-            </Map>
+            {window.google ? (
+                <Map
+                    google={window.google}
+                    initialCenter={{ lat: 53.3498, lng: -6.2603 }}
+                    style={{ height: "100%", position: "relative", width: "100%" }}
+                    className="map"
+                    zoom={11}
+                    styles={mapStyles}
+                    onClick={handleMapClick}
+                >
+                    {stations.map((station) => (
+                        <Marker
+                            key={station.place_id}
+                            title={station.name}
+                            name={station.name}
+                            position={station.geometry.location}
+                            onClick={(props, marker, e) => handleMarkerClick({ station }, marker, e)}
+                        />
+                    ))}
+                    {activeMarker && (
+                        <InfoWindow marker={activeMarker}>
+                            <div>
+                                <h6>{activeStation.name}</h6>
+                                <p>{activeStation.vicinity}</p>
+                            </div>
+                        </InfoWindow>
+                    )}
+                </Map>
+            ) : (
+                <div>Loading Map...</div>
+            )}
         </div>
     );
 }
+
 export default Fuelinator;
