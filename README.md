@@ -32,7 +32,7 @@ Next right click inside the folder and click open in CMD, once it opens type:<br
 
 Once that finishes, you will have to type: <br>
 <b> cd fuelinator</b><br>
-<b> npm install</b><br>
+<b> npm install --force</b> <i>Note: --force is needed due to packages not being supported of newer versions of React</i> <br>
 <b> npm start</b>
 
 And there you go!
