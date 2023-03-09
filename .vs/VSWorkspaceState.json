@@ -1,7 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\BackEnd",
+    "\\public"
   ],
-  "SelectedNode": "\\package-lock.json",
+  "SelectedNode": "\\package.json",
   "PreviewInSolutionExplorer": false
 }
