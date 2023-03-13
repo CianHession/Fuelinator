@@ -35,6 +35,12 @@ Once that finishes, you will have to type: <br>
 <b> npm install --force</b> <i>Note: --force is needed due to packages not being supported of newer versions of React</i> <br>
 <b> npm start</b>
 
+As the app is using the Google Maps API, you will need your own api key, you'll need to place it into a file called .env in the root of the projects folder like this:
+<b>Fuelinator/.env</b>
+The content of the file should be;
+<i>REACT_APP_GOOGLE_MAPS_API_KEY=KEYHERE</i>
+This key will only be used and visible to you.
+
 And there you go!
 
 Please leave me feedback at my email if you have any suggestions or questions.
