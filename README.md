@@ -17,7 +17,7 @@ You will need to create an account to use the Fuelinator, this can be done on la
 
 The project idea was made in response to the global rise in fuel prices over the past year.
 
-The app will also use Node.js and MongoDB/SQL aswell as geo-location within the app.
+The app will also use Node.js within the app.
 
 ## Requirements/How To Start The App?
 In order to run the app, you will need to install Node.js. <br>
