@@ -1,5 +1,8 @@
 const dotenv = require('dotenv');
 const express = require('express');
+const mongoose = require('mongoose');
+const myConnectionString = "mongodb+srv://Fuelinator:JhCxIACiTTVQZij2@fuelcluster.rm2qxw2.mongodb.net/?retryWrites=true&w=majority";
+mongoose.connect(myConnectionString, { useNewUrlParser: true });
 
 dotenv.config(); // Load environment variables from .env file
 

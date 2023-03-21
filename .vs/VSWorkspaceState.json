@@ -2,8 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\BackEnd",
-    "\\public"
+    "\\public",
+    "\\src"
   ],
-  "SelectedNode": "\\package.json",
+  "SelectedNode": "\\src\\Fuelinator.js",
   "PreviewInSolutionExplorer": false
 }
