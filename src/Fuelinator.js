@@ -8,16 +8,7 @@ import { counties, countyCoords } from './counties';
 function Fuelinator() {
     const [google, setGoogle] = useState(null);
     const [places, setPlaces] = useState([]);
-    const [showAboutPopup, setShowAboutPopup] = useState(false);
     const [selectedCounty, setSelectedCounty] = useState(null);
-
-    const handleAboutClick = () => {
-        setShowAboutPopup(true);
-    };
-
-    const handlePopupClose = () => {
-        setShowAboutPopup(false);
-    };
 
     const handleCountySelect = (selectedOption) => {
         setSelectedCounty(selectedOption);
@@ -86,7 +77,7 @@ function Fuelinator() {
         return (
             <Map
                 google={google}
-                zoom={8}
+                zoom={7}
                 initialCenter={{ lat: 53.1424, lng: -7.6921 }}
             >
                 {renderMarkers()}

@@ -1,10 +1,8 @@
 {
   "ExpandedNodes": [
     "",
-    "\\BackEnd",
-    "\\public",
     "\\src"
   ],
-  "SelectedNode": "\\src\\Fuelinator.js",
+  "SelectedNode": "\\src\\counties.js",
   "PreviewInSolutionExplorer": false
 }
