@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+ï»¿import React, { useState, useEffect } from "react";
 import { Map, Marker, InfoWindow } from "google-maps-react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Select from "react-select";
@@ -14,10 +14,11 @@ function Fuelinator() {
     const handleMarkerClick = (id) => {
         console.log("Marker clicked:", id);
         const selectedStation = fuelStations.find((station) => station._id === id);
-        setSelectedMarker(selectedStation || null);
+        setSelectedMarker(selectedStation);
     };
 
-        const handleCountySelect = async (selectedOption) => {
+
+    const handleCountySelect = async (selectedOption) => {
         setSelectedCounty(selectedOption);
         const county = selectedOption.value;
 
@@ -100,15 +101,15 @@ function Fuelinator() {
                         url: "https://raineycawthon.com/img/256px/7.png",
                         scaledSize: new window.google.maps.Size(36, 36),
                     }}
-                    selected={selectedMarker?._id === _id}
+                    selected={selectedMarker?._id === _id && selectedMarker}
                 >
                     {selectedMarker?._id === _id && (
                         <InfoWindow onCloseClick={() => setSelectedMarker(null)}>
                             <div>
                                 <h6>{name}</h6>
                                 <p>Address: {address}</p>
-                                {dieselPrice && <p>Diesel price: {dieselPrice} €/L</p>}
-                                {petrolPrice && <p>Petrol price: {petrolPrice} €/L</p>}
+                                {dieselPrice && <p>Diesel price: {dieselPrice} â‚¬/L</p>}
+                                {petrolPrice && <p>Petrol price: {petrolPrice} â‚¬/L</p>}
                             </div>
                         </InfoWindow>
                     )}
