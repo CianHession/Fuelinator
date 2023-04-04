@@ -1,7 +1,6 @@
 ﻿import React, { useState, useEffect } from "react";
 import { Map, Marker, InfoWindow } from "google-maps-react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { counties, countyCoords } from "./counties";
 
 function Fuelinator() {
     const [google, setGoogle] = useState(null);
@@ -13,7 +12,6 @@ function Fuelinator() {
     };
 
     const handleMarkerClick = (id) => {
-        console.log("Marker clicked:", id);
         const selectedStation = fuelStations.find((station) => station._id === id);
         setSelectedMarker(selectedStation || null);
     };
@@ -45,7 +43,6 @@ function Fuelinator() {
     const renderMarkers = () => {
         return fuelStations.map((station) => {
             const { _id, latitude, longitude, name, address, rating } = station;
-            console.log("Selected Marker:", selectedMarker);
             return (
                 <Marker
                     key={_id}
