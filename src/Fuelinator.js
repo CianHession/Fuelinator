@@ -1,40 +1,21 @@
 ﻿import React, { useState, useEffect } from "react";
 import { Map, Marker, InfoWindow } from "google-maps-react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Select from "react-select";
 import { counties, countyCoords } from "./counties";
 
 function Fuelinator() {
     const [google, setGoogle] = useState(null);
-    const [places, setPlaces] = useState([]);
-    const [selectedCounty, setSelectedCounty] = useState(null);
     const [fuelStations, setFuelStations] = useState([]);
     const [selectedMarker, setSelectedMarker] = useState(null);
+    const irelandCoords = {
+        lat: 53.1424,
+        lng: -7.6921
+    };
 
     const handleMarkerClick = (id) => {
         console.log("Marker clicked:", id);
         const selectedStation = fuelStations.find((station) => station._id === id);
-        setSelectedMarker(selectedStation);
-    };
-
-
-    const handleCountySelect = async (selectedOption) => {
-        setSelectedCounty(selectedOption);
-        const county = selectedOption.value;
-
-        try {
-            const response = await fetch("http://localhost:3001/api/fuelstations", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ county }),
-            });
-            const data = await response.json();
-            setPlaces(data);
-        } catch (error) {
-            console.error("Error fetching fuel stations:", error);
-        }
+        setSelectedMarker(selectedStation || null);
     };
 
     useEffect(() => {
@@ -49,107 +30,70 @@ function Fuelinator() {
     }, []);
 
     useEffect(() => {
-        if (google && selectedCounty) {
-            const county = selectedCounty.value;
-            const service = new google.maps.places.PlacesService(
-                document.createElement("div")
-            );
-            service.textSearch(
-                {
-                    query: `fuel stations in ${county}, Ireland`,
-                    type: ["gas_station"],
-                },
-                (results, status) => {
-                    if (status === google.maps.places.PlacesServiceStatus.OK) {
-                        const stations = results.map((place) => {
-                            return {
-                                name: place.name,
-                                address: place.formatted_address,
-                                lat: place.geometry.location.lat(),
-                                lng: place.geometry.location.lng(),
-                            };
-                        });
-                        setFuelStations(stations);
-                        setPlaces(results);
-
-                        const countyBounds = new google.maps.LatLngBounds();
-                        countyBounds.extend(countyCoords[county]);
-                        const map = document.getElementById("map");
-                        map.fitBounds(countyBounds);
-                    } else {
-                        console.error("Error fetching places:", status);
-                    }
-                }
-            );
-        }
-    }, [google, selectedCounty]);
+        const fetchFuelStations = async () => {
+            try {
+                const response = await fetch("http://localhost:3001/api/fuelstations");
+                const data = await response.json();
+                setFuelStations(data);
+            } catch (error) {
+                console.error("Error fetching fuel stations:", error);
+            }
+        };
+        fetchFuelStations();
+    }, []);
 
     const renderMarkers = () => {
         return fuelStations.map((station) => {
-            const { _id, lat, lng, name, address, dieselPrice, petrolPrice } = station;
+            const { _id, latitude, longitude, name, address, rating } = station;
             console.log("Selected Marker:", selectedMarker);
             return (
                 <Marker
                     key={_id}
-                    position={{ lat, lng }}
+                    position={{ lat: latitude, lng: longitude }}
                     name={name}
                     address={address}
-                    dieselPrice={dieselPrice}
-                    petrolPrice={petrolPrice}
+                    rating={rating}
                     onClick={() => handleMarkerClick(_id)}
                     icon={{
                         url: "https://raineycawthon.com/img/256px/7.png",
                         scaledSize: new window.google.maps.Size(36, 36),
                     }}
-                    selected={selectedMarker?._id === _id && selectedMarker}
-                >
-                    {selectedMarker?._id === _id && (
-                        <InfoWindow onCloseClick={() => setSelectedMarker(null)}>
-                            <div>
-                                <h6>{name}</h6>
-                                <p>Address: {address}</p>
-                                {dieselPrice && <p>Diesel price: {dieselPrice} €/L</p>}
-                                {petrolPrice && <p>Petrol price: {petrolPrice} €/L</p>}
-                            </div>
-                        </InfoWindow>
-                    )}
-                </Marker>
+                />
             );
         });
     };
 
-
-    const renderMap = () => {
-        if (!google) {
-            return null;
-        }
-        return (
-            <Map
-                google={google}
-                zoom={7}
-                initialCenter={{ lat: 53.1424, lng: -7.6921 }}
-            >
-                {renderMarkers()}
-            </Map>
-        );
-    };
-
-    const renderCountySelect = () => {
-        return (
-            <Select
-                options={counties}
-                onChange={handleCountySelect}
-                placeholder="Select a County"
-            />
-        );
-    };
-
     return (
         <div>
-            {renderCountySelect()}
-            {renderMap()}
+            <h1>Fuelinator</h1>
+            <div style={{ width: "100%", height: "80vh" }}>
+                {google && (
+                    <Map
+                        google={google}
+                        zoom={7}
+                        initialCenter={irelandCoords}
+                    >
+                        {renderMarkers()}
+                        {selectedMarker && (
+                            <InfoWindow
+                                position={{
+                                    lat: selectedMarker.latitude,
+                                    lng: selectedMarker.longitude,
+                                }}
+                                onCloseClick={() => setSelectedMarker(null)}
+                            >
+                                <div>
+                                    <h2>{selectedMarker.name}</h2>
+                                    <p>{selectedMarker.address}</p>
+                                    <p>{`Rating: ${selectedMarker.rating}`}</p>
+                                </div>
+                            </InfoWindow>
+                        )}
+                    </Map>
+                )}
+            </div>
         </div>
     );
 }
 
-export default Fuelinator
+export default Fuelinator;

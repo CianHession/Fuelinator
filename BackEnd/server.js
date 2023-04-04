@@ -3,29 +3,41 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const fuelStations = require('../Data/combinedFormattedStations.json');
 
-const app = express();
-const port = 3001;
 dotenv.config(); // Load environment variables from .env file
+const app = express();
+const port = process.env.PORT || 3001;
 
 const myConnectionString = "mongodb+srv://Fuelinator:YSrjzd5iD1bCaCbD@fuelcluster.rm2qxw2.mongodb.net/Fuel?retryWrites=true&w=majority";
 mongoose.connect(myConnectionString, { useNewUrlParser: true });
 
-app.use(bodyParser.json(), cors());
+app.use(bodyParser.json());
+app.use(cors());
 
 const fuelStationSchema = new mongoose.Schema({
     name: String,
     address: String,
-    city: String,
-    county: String,
-    postcode: String,
-    lat: Number,
-    lng: Number,
-    dieselPrice: Number,
-    petrolPrice: Number,
+    latitude: Number,
+    longitude: Number,
+    rating: Number,
 });
 
 const FuelStation = mongoose.model('FuelStation', fuelStationSchema);
+
+// Push the JSON data to MongoDB
+fuelStations.forEach(station => {
+    const { name, address, latitude, longitude, rating } = station;
+    const newStation = new FuelStation({
+        name,
+        address,
+        latitude,
+        longitude,
+        rating
+    });
+    newStation.save()
+        .catch(err => console.log(err));
+});
 
 app.get('/api/fuelstations', (req, res) => {
     FuelStation.find({})
@@ -34,17 +46,13 @@ app.get('/api/fuelstations', (req, res) => {
 });
 
 app.post('/api/fuelstations', (req, res) => {
-    const { name, address, city, county, postcode, lat, lng, dieselPrice, petrolPrice } = req.body;
+    const { name, address, latitude, longitude, rating } = req.body;
     const newStation = new FuelStation({
         name,
         address,
-        city,
-        county,
-        postcode,
-        lat,
-        lng,
-        dieselPrice,
-        petrolPrice
+        latitude,
+        longitude,
+        rating
     });
     newStation.save()
         .then(station => res.json(station))
