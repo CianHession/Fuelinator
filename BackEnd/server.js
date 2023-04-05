@@ -21,13 +21,14 @@ const fuelStationSchema = new mongoose.Schema({
     latitude: Number,
     longitude: Number,
     rating: Number,
+    county: String
 });
 
 const FuelStation = mongoose.model('FuelStation', fuelStationSchema);
 
 // Push the JSON data to MongoDB
 fuelStations.forEach(station => {
-    const { name, address, latitude, longitude, rating } = station;
+    const { name, address, latitude, longitude, rating, county } = station;
 
     FuelStation.findOne({ name, address })
         .then(existingStation => {
@@ -41,7 +42,8 @@ fuelStations.forEach(station => {
                 address,
                 latitude,
                 longitude,
-                rating
+                rating,
+                county
             });
 
             newStation.save()
@@ -51,10 +53,16 @@ fuelStations.forEach(station => {
         .catch(err => console.log(`Error finding station ${name} at ${address}: ${err.message}`));
 });
 
-
 app.get('/api/fuelstations', (req, res) => {
     FuelStation.find({})
-        .then(stations => res.json(stations))
+        .then(stations => {
+            const updatedStations = stations.map(station => {
+                const updatedStation = { ...station.toObject(), county: station.county };
+                delete updatedStation._id;
+                return updatedStation;
+            });
+            res.json(updatedStations);
+        })
         .catch(err => console.log(err));
 });
 
