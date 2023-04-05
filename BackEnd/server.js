@@ -28,16 +28,29 @@ const FuelStation = mongoose.model('FuelStation', fuelStationSchema);
 // Push the JSON data to MongoDB
 fuelStations.forEach(station => {
     const { name, address, latitude, longitude, rating } = station;
-    const newStation = new FuelStation({
-        name,
-        address,
-        latitude,
-        longitude,
-        rating
-    });
-    newStation.save()
-        .catch(err => console.log(err));
+
+    FuelStation.findOne({ name, address })
+        .then(existingStation => {
+            if (existingStation) {
+                console.log(`Skipping station ${name} at ${address} because it already exists.`);
+                return;
+            }
+
+            const newStation = new FuelStation({
+                name,
+                address,
+                latitude,
+                longitude,
+                rating
+            });
+
+            newStation.save()
+                .then(savedStation => console.log(`Added station ${savedStation.name} at ${savedStation.address}.`))
+                .catch(err => console.log(`Error adding station ${name} at ${address}: ${err.message}`));
+        })
+        .catch(err => console.log(`Error finding station ${name} at ${address}: ${err.message}`));
 });
+
 
 app.get('/api/fuelstations', (req, res) => {
     FuelStation.find({})

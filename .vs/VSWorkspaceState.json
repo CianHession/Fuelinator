@@ -1,8 +1,9 @@
 {
   "ExpandedNodes": [
     "",
+    "\\public",
     "\\src"
   ],
-  "SelectedNode": "\\src\\About.js",
+  "SelectedNode": "\\src\\Navbar.js",
   "PreviewInSolutionExplorer": false
 }

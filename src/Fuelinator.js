@@ -62,7 +62,6 @@ function Fuelinator() {
 
     return (
         <div>
-            <h1>Fuelinator</h1>
             <div style={{ width: "100%", height: "80vh" }}>
                 {google && (
                     <Map
