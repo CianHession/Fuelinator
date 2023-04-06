@@ -1,11 +1,9 @@
-const dotenv = require('dotenv');
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const fuelStations = require('../Data/combinedFormattedStations.json');
 
-dotenv.config(); // Load environment variables from .env file
 const app = express();
 const port = process.env.PORT || 3001;
 
@@ -35,57 +33,62 @@ fuelStations.forEach(station => {
     FuelStation.findOne({ name, address })
         .then(existingStation => {
             if (existingStation) {
-                console.log(`Skipping station ${name} at ${address} because it already exists.`);
-                return;
+                console.log(`Skipping station ${name}...`);
+            } else {
+                const { petrolPrice, dieselPrice } = station.prices;
+                const newStation = new FuelStation({
+                    name,
+                    address,
+                    latitude,
+                    longitude,
+                    rating,
+                    county,
+                    petrolPrice,
+                    dieselPrice
+                });
+                newStation.save()
+                    .then(savedStation => {
+                        console.log(`Saved station ${savedStation.name}`);
+                    })
+                    .catch(error => {
+                        console.error(`Error saving station ${name}: ${error}`);
+                    });
             }
-
-            const newStation = new FuelStation({
-                name,
-                address,
-                latitude,
-                longitude,
-                rating,
-                county
-            });
-
-            newStation.save()
-                .then(savedStation => console.log(`Added station ${savedStation.name} at ${savedStation.address}.`))
-                .catch(err => console.log(`Error adding station ${name} at ${address}: ${err.message}`));
         })
-        .catch(err => console.log(`Error finding station ${name} at ${address}: ${err.message}`));
+        .catch(error => {
+            console.error(`Error finding station ${name}: ${error}`);
+        });
 });
 
+// Get all fuel stations
 app.get('/api/fuelstations', (req, res) => {
     FuelStation.find({})
-        .then(stations => {
-            const updatedStations = stations.map(station => {
-                const updatedStation = { ...station.toObject(), county: station.county };
-                delete updatedStation._id;
-                return updatedStation;
-            });
-            res.json(updatedStations);
+        .exec()
+        .then(fuelStations => {
+            res.json(fuelStations);
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+            console.error(`Error finding fuel stations: ${err}`);
+            res.status(500).send(`Error finding fuel stations: ${err}`);
+        });
 });
 
+// Get a fuel station by ID
 app.get('/api/fuelstations/:id', (req, res) => {
-    FuelStation.findById(req.params.id)
-        .then(station => res.json(station))
-        .catch(err => console.log(err));
-});
-
-app.post('/api/fuelstations', (req, res) => {
-    const { name, address, latitude, longitude, rating } = req.body;
-    const newStation = new FuelStation({
-        name,
-        address,
-        latitude,
-        longitude,
-        rating
-    });
-    newStation.save()
-        .then(station => res.json(station))
-        .catch(err => console.log(err));
+    const id = new mongoose.Types.ObjectId(req.params.id);
+    FuelStation.findById(id)
+        .exec()
+        .then(fuelStation => {
+            if (!fuelStation) {
+                res.status(404).send(`Fuel station with ID ${id} not found`);
+            } else {
+                res.json(fuelStation);
+            }
+        })
+        .catch(err => {
+            console.error(`Error finding fuel station with ID ${id}: ${err}`);
+            res.status(500).send(`Error finding fuel station with ID ${id}: ${err}`);
+        });
 });
 
 app.get('/', (req, res) => {
