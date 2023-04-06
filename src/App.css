@@ -30,3 +30,32 @@ img {
     max-width: 100%;
     height: auto;
 }
+.home-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.home-heading {
+    margin: 2rem 0;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #ccc;
+    padding: 2rem;
+    border-radius: 5px;
+    width: 400px;
+}
+
+.form-input {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+}
+
+label {
+    margin-bottom: 0.5rem;
+}
