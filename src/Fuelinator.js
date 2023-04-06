@@ -8,6 +8,57 @@ function Fuelinator() {
     const [fuelStations, setFuelStations] = useState([]);
     const [selectedMarker, setSelectedMarker] = useState(null);
     const [selectedCounty, setSelectedCounty] = useState(null);
+    const [editMode, setEditMode] = useState(false);
+
+    const handlePetrolPriceChange = (event) => {
+        setSelectedMarker({
+            ...selectedMarker,
+            petrolPrice: event.target.value,
+        });
+    };
+
+    const handleDieselPriceChange = (event) => {
+        setSelectedMarker({
+            ...selectedMarker,
+            dieselPrice: event.target.value,
+        });
+    };
+
+    const handleFormSubmit = async (event) => {
+        event.preventDefault();
+
+        try {
+            const response = await fetch(`http://localhost:3001/api/fuelstations/${selectedMarker._id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    petrolPrice: selectedMarker.petrolPrice,
+                    dieselPrice: selectedMarker.dieselPrice,
+                }),
+            });
+            const data = await response.json();
+            const updatedFuelStations = fuelStations.map((station) => {
+                if (station._id === selectedMarker._id) {
+                    return {
+                        ...station,
+                        petrolPrice: data.petrolPrice || "N/A",
+                        dieselPrice: data.dieselPrice || "N/A",
+                    };
+                }
+                return station;
+            });
+            setFuelStations(updatedFuelStations);
+            setSelectedMarker({
+                ...selectedMarker,
+                petrolPrice: data.petrolPrice || "N/A",
+                dieselPrice: data.dieselPrice || "N/A",
+            });
+        } catch (error) {
+            console.error("Error updating fuel station data:", error);
+        }
+    };
 
     const handleMarkerClick = async (id) => {
         const selectedStation = fuelStations.find((station) => station._id === id);
@@ -15,6 +66,7 @@ function Fuelinator() {
             try {
                 const response = await fetch(`http://localhost:3001/api/fuelstations/${id}`);
                 const data = await response.json();
+                setEditMode(false);
                 setSelectedMarker({
                     ...selectedStation,
                     petrolPrice: data.petrolPrice || "N/A",
@@ -165,8 +217,21 @@ function Fuelinator() {
                         <p>{`Petrol Price: €${selectedMarker.petrolPrice}`}</p>
                         <p>{`Diesel Price: €${selectedMarker.dieselPrice}`}</p>
                         <p>{`Rating: ${selectedMarker.rating}`}</p>
+                        <button onClick={() => setEditMode(!editMode)}>Edit Fuel Prices</button>
                     </div>
-
+                )}
+                {editMode && (
+                    <form onSubmit={handleFormSubmit} disabled={!editMode}>
+                        <label>
+                            Petrol Price:
+                            <input type="number" value={selectedMarker.petrolPrice} onChange={handlePetrolPriceChange} />
+                        </label>
+                        <label>
+                            Diesel Price:
+                            <input type="number" value={selectedMarker.dieselPrice} onChange={handleDieselPriceChange} />
+                        </label>
+                        <button type="submit">Save</button>
+                    </form>
                 )}
             </div>
         </div>

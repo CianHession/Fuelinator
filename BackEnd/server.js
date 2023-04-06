@@ -26,7 +26,6 @@ const fuelStationSchema = new mongoose.Schema({
 
 const FuelStation = mongoose.model('FuelStation', fuelStationSchema);
 
-// Push the JSON data to MongoDB
 fuelStations.forEach(station => {
     const { name, address, latitude, longitude, rating, county } = station;
 
@@ -59,7 +58,6 @@ fuelStations.forEach(station => {
         });
 });
 
-// Get all fuel stations
 app.get('/api/fuelstations', (req, res) => {
     FuelStation.find({})
         .exec()
@@ -72,7 +70,28 @@ app.get('/api/fuelstations', (req, res) => {
         });
 });
 
-// Get a fuel station by ID
+app.put('/api/fuelstations/:id/', (req, res) => {
+    const id = new mongoose.Types.ObjectId(req.params.id);
+    FuelStation.findById(id)
+        .exec()
+        .then(fuelStation => {
+            if (!fuelStation) {
+                res.status(404).send(`Fuel station with ID ${id} not found`);
+            } else {
+                fuelStation.petrolPrice = req.body.petrolPrice || fuelStation.petrolPrice;
+                fuelStation.dieselPrice = req.body.dieselPrice || fuelStation.dieselPrice;
+                return fuelStation.save();
+            }
+        })
+        .then(updatedStation => {
+            res.json(updatedStation);
+        })
+        .catch(err => {
+            console.error(`Error updating fuel station with ID ${id}: ${err}`);
+            res.status(500).send(`Error updating fuel station with ID ${id}: ${err}`);
+        });
+});
+
 app.get('/api/fuelstations/:id', (req, res) => {
     const id = new mongoose.Types.ObjectId(req.params.id);
     FuelStation.findById(id)
