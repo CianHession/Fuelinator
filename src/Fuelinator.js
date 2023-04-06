@@ -1,40 +1,29 @@
 ﻿import React, { useState, useEffect } from "react";
 import { Map, Marker, InfoWindow } from "google-maps-react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { counties } from "./Counties";
+import { counties, irelandCoords} from "./Counties";
 
 function Fuelinator() {
     const [google, setGoogle] = useState(null);
     const [fuelStations, setFuelStations] = useState([]);
     const [selectedMarker, setSelectedMarker] = useState(null);
     const [selectedCounty, setSelectedCounty] = useState(null);
-    const irelandCoords = {
-        lat: 53.1424,
-        lng: -7.6921
-    };
+
     const handleMarkerClick = async (id) => {
-        console.log("Selected station id:", id);
-        console.log("Fuel stations:", fuelStations);
         const selectedStation = fuelStations.find((station) => station._id === id);
         if (selectedStation) {
             try {
                 const response = await fetch(`http://localhost:3001/api/fuelstations/${id}`);
                 const data = await response.json();
-                console.log("Fuel Station Data:", data);
                 setSelectedMarker({
                     ...selectedStation,
                     petrolPrice: data.petrolPrice || "N/A",
                     dieselPrice: data.dieselPrice || "N/A",
                 });
-                console.log("Active Marker: ", selectedMarker);
             } catch (error) {
                 console.error("Error fetching fuel station data:", error);
             }
         }
-    };
-
-    const filterFuelStationsByCounty = (county) => {
-        return fuelStations.filter((station) => station.county === county);
     };
 
     useEffect(() => {

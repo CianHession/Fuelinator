@@ -32,9 +32,8 @@ fuelStations.forEach(station => {
 
     FuelStation.findOne({ name, address })
         .then(existingStation => {
-            if (existingStation) {
-                console.log(`Skipping station ${name}...`);
-            } else {
+            if (existingStation) { }
+            else {
                 const { petrolPrice, dieselPrice } = station.prices;
                 const newStation = new FuelStation({
                     name,
