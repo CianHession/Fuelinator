@@ -21,7 +21,9 @@ const fuelStationSchema = new mongoose.Schema({
     latitude: Number,
     longitude: Number,
     rating: Number,
-    county: String
+    county: String,
+    petrolPrice: Number,
+    dieselPrice: Number
 });
 
 const FuelStation = mongoose.model('FuelStation', fuelStationSchema);
@@ -63,6 +65,12 @@ app.get('/api/fuelstations', (req, res) => {
             });
             res.json(updatedStations);
         })
+        .catch(err => console.log(err));
+});
+
+app.get('/api/fuelstations/:id', (req, res) => {
+    FuelStation.findById(req.params.id)
+        .then(station => res.json(station))
         .catch(err => console.log(err));
 });
 

@@ -1,19 +1,40 @@
 ﻿import React, { useState, useEffect } from "react";
 import { Map, Marker, InfoWindow } from "google-maps-react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { counties } from "./Counties";
 
 function Fuelinator() {
     const [google, setGoogle] = useState(null);
     const [fuelStations, setFuelStations] = useState([]);
     const [selectedMarker, setSelectedMarker] = useState(null);
+    const [selectedCounty, setSelectedCounty] = useState(null);
     const irelandCoords = {
         lat: 53.1424,
         lng: -7.6921
     };
-
-    const handleMarkerClick = (id) => {
+    const handleMarkerClick = async (id) => {
+        console.log("Selected station id:", id);
+        console.log("Fuel stations:", fuelStations);
         const selectedStation = fuelStations.find((station) => station._id === id);
-        setSelectedMarker(selectedStation || null);
+        if (selectedStation) {
+            try {
+                const response = await fetch(`http://localhost:3001/api/fuelstations/${id}`);
+                const data = await response.json();
+                console.log("Fuel Station Data:", data);
+                setSelectedMarker({
+                    ...selectedStation,
+                    petrolPrice: data.petrolPrice || "N/A",
+                    dieselPrice: data.dieselPrice || "N/A",
+                });
+                console.log("Active Marker: ", selectedMarker);
+            } catch (error) {
+                console.error("Error fetching fuel station data:", error);
+            }
+        }
+    };
+
+    const filterFuelStationsByCounty = (county) => {
+        return fuelStations.filter((station) => station.county === county);
     };
 
     useEffect(() => {
@@ -41,34 +62,85 @@ function Fuelinator() {
     }, []);
 
     const renderMarkers = () => {
-        return fuelStations.map((station) => {
-            const { _id, latitude, longitude, name, address, rating } = station;
-            return (
-                <Marker
-                    key={_id}
-                    position={{ lat: latitude, lng: longitude }}
-                    name={name}
-                    address={address}
-                    rating={rating}
-                    onClick={() => handleMarkerClick(_id)}
-                    icon={{
-                        url: "https://raineycawthon.com/img/256px/7.png",
-                        scaledSize: new window.google.maps.Size(36, 36),
-                    }}
-                />
-            );
-        });
+        if (!selectedCounty) {
+            return fuelStations.map((station) => {
+                const { _id, latitude, longitude, name, address, rating } = station;
+                return (
+                    <Marker
+                        key={_id}
+                        position={{ lat: latitude, lng: longitude }}
+                        name={name}
+                        address={address}
+                        rating={rating}
+                        onClick={() => handleMarkerClick(_id)}
+
+                        icon={{
+                            url: "https://raineycawthon.com/img/256px/7.png",
+                            scaledSize: new window.google.maps.Size(36, 36),
+                        }}
+                    >
+                        {selectedMarker && selectedMarker._id === _id && (
+                            <InfoWindow onCloseClick={() => setSelectedMarker(null)}>
+                                <div>
+                                    <h2>{name}</h2>
+                                    <p>{address}</p>
+                                    {selectedMarker.petrolPrice && (
+                                        <p>{`Petrol Price: €${selectedMarker.petrolPrice}`}</p>
+                                    )}
+                                    {selectedMarker.dieselPrice && (
+                                        <p>{`Diesel Price: €${selectedMarker.dieselPrice}`}</p>
+                                    )}
+                                    <p>{`Rating: ${rating}`}</p>
+                                </div>
+                            </InfoWindow>
+                        )}
+                    </Marker>
+                );
+            });
+        } else {
+            return fuelStations
+                .filter((station) => station.county === selectedCounty)
+                .map((station) => {
+                    const { _id, latitude, longitude, name, address, rating } = station;
+                    return (
+                        <Marker
+                            key={_id}
+                            position={{ lat: latitude, lng: longitude }}
+                            name={name}
+                            address={address}
+                            rating={rating}
+                            onClick={() => handleMarkerClick(_id)}
+                            icon={{
+                                url: "https://raineycawthon.com/img/256px/7.png",
+                                scaledSize: new window.google.maps.Size(36, 36),
+                            }}
+                        >
+                            {selectedMarker && selectedMarker._id === _id && (
+                                <InfoWindow onCloseClick={() => setSelectedMarker(null)}>
+                                    <div>
+                                        <h2>{name}</h2>
+                                        <p>{address}</p>
+                                        {selectedMarker.petrolPrice && (
+                                            <p>{`Petrol Price: €${selectedMarker.petrolPrice}`}</p>
+                                        )}
+                                        {selectedMarker.dieselPrice && (
+                                            <p>{`Diesel Price: €${selectedMarker.dieselPrice}`}</p>
+                                        )}
+                                        <p>{`Rating: ${rating}`}</p>
+                                    </div>
+                                </InfoWindow>
+                            )}
+                        </Marker>
+                    );
+                });
+        }
     };
 
     return (
-        <div>
-            <div style={{ width: "100%", height: "80vh" }}>
+        <div style={{ display: 'flex', flexDirection: 'row-reverse' }}>
+            <div style={{ width: '100%', height: '80vh' }}>
                 {google && (
-                    <Map
-                        google={google}
-                        zoom={7}
-                        initialCenter={irelandCoords}
-                    >
+                    <Map google={google} zoom={7} initialCenter={irelandCoords}>
                         {renderMarkers()}
                         {selectedMarker && (
                             <InfoWindow
@@ -88,8 +160,27 @@ function Fuelinator() {
                     </Map>
                 )}
             </div>
+            <div>
+                <select className="custom-dropdown-menu" value={selectedCounty} onChange={(e) => setSelectedCounty(e.target.value)}>
+                    <option value="">Select County</option>
+                    {counties.map((county) => (
+                        <option key={county} value={county}>
+                            {county}
+                        </option>
+                    ))}
+                </select>
+                {selectedMarker && (
+                    <div className="station-data">
+                        <h2>{selectedMarker.name}</h2>
+                        <p>{selectedMarker.address}</p>
+                        <p>{`Petrol Price: €${selectedMarker.petrolPrice}`}</p>
+                        <p>{`Diesel Price: €${selectedMarker.dieselPrice}`}</p>
+                        <p>{`Rating: ${selectedMarker.rating}`}</p>
+                    </div>
+
+                )}
+            </div>
         </div>
     );
 }
-
 export default Fuelinator;
