@@ -8,6 +8,10 @@
     height: 500px;
 }
 
+.error-message {
+    color: red;
+}
+
 .station-data {
     width: 300px;
     font-size: 1.2rem;

@@ -13,7 +13,7 @@ function About() {
                         Fuelinator is a fuel tracking app that helps you find fuel stations for every county in Ireland, viewing user submitted fuel prices, allowing you to find prices before arriving!
                     </p>
                     <p>
-                        Fuelinator is free and open-sourced software, it's built using the latest web technologies, including React, Node.js, and MongoDB.
+                        Fuelinator is free and open-sourced software, it's built using the latest web technologies, including React, Node.js,Firebase and MongoDB.
                     </p>
                     <p>
                         I created Fuelinator for my Final Year Software Development project, with the aim of one day updating it to a higher standard, offering more functionality.

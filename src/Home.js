@@ -10,14 +10,20 @@ const Home = () => {
     const [signupEmail, setSignupEmail] = useState("");
     const [signupPassword, setSignupPassword] = useState("");
     const [signupPasswordError, setSignupPasswordError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
 
     const handleLogin = async (event) => {
         event.preventDefault();
         try {
+            localStorage.setItem('isAuthenticated', 'true');
             await loginUser(auth, loginEmail, loginPassword);
             navigate("/fuelinator"); // Navigate to protected route on successful login
         } catch (error) {
-            console.log(error.message);
+            if (error.code === "auth/user-not-found") {
+                setErrorMessage("That Email is not registered to an account, please register below.");
+            } else {
+                setErrorMessage("Incorrect password, please try again.");
+            }
         }
     };
 
@@ -29,6 +35,8 @@ const Home = () => {
         }
         try {
             await createUser(auth, signupEmail, signupPassword);
+            await loginUser(auth, signupEmail, signupPassword); // Login user after successful registration
+            localStorage.setItem('isAuthenticated', 'true'); // Set authentication flag
             navigate("/fuelinator"); // Navigate to protected route on successful signup
         } catch (error) {
             console.log(error.message);
@@ -39,6 +47,7 @@ const Home = () => {
         <div className="home-container">
             <h1 className="home-heading">Welcome to Fuelinator!</h1>
             <div className="form-container">
+                {errorMessage && <p className="error-message">{errorMessage}</p>}
                 <form onSubmit={handleLogin}>
                     <h2>Login</h2>
                     <div className="form-input">
@@ -58,8 +67,6 @@ const Home = () => {
                             value={loginPassword}
                             onChange={(event) => setLoginPassword(event.target.value)}
                         />
-                        {signupPasswordError && <p className="error-message">Password must be at least 6 characters long</p>}
-
                     </div>
                     <button type="submit">Login</button>
                 </form>
@@ -83,7 +90,11 @@ const Home = () => {
                             value={signupPassword}
                             onChange={(event) => setSignupPassword(event.target.value)}
                         />
-                        {signupPasswordError && <p className="error-message">Password must be at least 6 characters long</p>}
+                        {signupPasswordError && (
+                            <p className="error-message">
+                                Password must be at least 6 characters long
+                            </p>
+                        )}
                     </div>
                     <button type="submit">Signup</button>
                 </form>

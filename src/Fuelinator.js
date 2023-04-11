@@ -1,7 +1,9 @@
 ﻿import React, { useState, useEffect } from "react";
 import { Map, Marker, InfoWindow } from "google-maps-react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { counties, irelandCoords} from "./Counties";
+import { counties, irelandCoords } from "./Counties";
+
+import { useNavigate } from 'react-router-dom';
 
 function Fuelinator() {
     const [google, setGoogle] = useState(null);
@@ -9,6 +11,7 @@ function Fuelinator() {
     const [selectedMarker, setSelectedMarker] = useState(null);
     const [selectedCounty, setSelectedCounty] = useState(null);
     const [editMode, setEditMode] = useState(false);
+    const navigate = useNavigate();
 
     const handlePetrolPriceChange = (event) => {
         setSelectedMarker({
@@ -87,6 +90,12 @@ function Fuelinator() {
             setGoogle(window.google);
         });
         document.head.appendChild(script);
+    }, []);
+
+    useEffect(() => {
+        if (localStorage.getItem('isAuthenticated') !== 'true') {
+            navigate('/');
+        }
     }, []);
 
     useEffect(() => {
