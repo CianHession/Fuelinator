@@ -35,9 +35,7 @@ function Navbar({ handleAboutClick }) {
 
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
-            <a className="navbar-brand" href="/">
-                Fuelinator
-            </a>
+            <a className="navbar-brand" href={isAuthenticated ? "/fuelinator" : "/"}>Fuelinator</a>
             <button
                 className="navbar-toggler"
                 type="button"
@@ -52,7 +50,7 @@ function Navbar({ handleAboutClick }) {
             <div className="collapse navbar-collapse" id="navbarNav">
                 <ul className="navbar-nav mr-auto">
                     <li className="nav-item active">
-                        <a className="nav-link" href="/">
+                        <a className="nav-link" href={isAuthenticated ? "/fuelinator" : "/"}>
                             Home <span className="sr-only">(current)</span>
                         </a>
                     </li>
