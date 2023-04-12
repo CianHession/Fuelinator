@@ -30,17 +30,31 @@ function Fuelinator() {
     const handleFormSubmit = async (event) => {
         event.preventDefault();
 
+        // Check if the prices are valid
+        if (
+            selectedMarker.petrolPrice < 0.99 ||
+            selectedMarker.petrolPrice > 2.2 ||
+            selectedMarker.dieselPrice < 0.99 ||
+            selectedMarker.dieselPrice > 2.2
+        ) {
+            alert("Prices must be between 1.0 and 2.1");
+            return;
+        }
+
         try {
-            const response = await fetch(`http://localhost:3001/api/fuelstations/${selectedMarker._id}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    petrolPrice: selectedMarker.petrolPrice,
-                    dieselPrice: selectedMarker.dieselPrice,
-                }),
-            });
+            const response = await fetch(
+                `http://localhost:3001/api/fuelstations/${selectedMarker._id}`,
+                {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        petrolPrice: selectedMarker.petrolPrice,
+                        dieselPrice: selectedMarker.dieselPrice,
+                    }),
+                }
+            );
             const data = await response.json();
             const updatedFuelStations = fuelStations.map((station) => {
                 if (station._id === selectedMarker._id) {
