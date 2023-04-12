@@ -204,7 +204,7 @@ function Fuelinator() {
         <div style={{ display: 'flex', flexDirection: 'row-reverse' }}>
             <div style={{ width: '100%', height: '80vh' }}>
                 {google && (
-                    <Map google={google} zoom={7} initialCenter={irelandCoords}>
+                    <Map google={google} zoom={7} initialCenter={irelandCoords} mapTypeControl={false}>
                         {renderMarkers()}
                         {selectedMarker && (
                             <InfoWindow

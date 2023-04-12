@@ -1,9 +1,31 @@
-import React from 'react';
-import { Routes, Route, Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Button } from 'react-bootstrap';
-import './App.css';
+import { auth } from './Firebase';
 
 function About() {
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((user) => {
+            if (user) {
+                setIsAuthenticated(true);
+            } else {
+                setIsAuthenticated(false);
+            }
+        });
+        return () => unsubscribe();
+    }, []);
+
+    const handleBackButtonClick = () => {
+        if (isAuthenticated) {
+            navigate('/fuelinator');
+        } else {
+            navigate('/');
+        }
+    };
+
     return (
         <Container>
             <Row>
@@ -18,9 +40,12 @@ function About() {
                     <p>
                         I created Fuelinator for my Final Year Software Development project, with the aim of one day updating it to a higher standard, offering more functionality.
                     </p>
-                    <Button as={Link} to="/" variant="primary">Back to Fuelinator</Button>
-                    <Button variant="secondary" href="https://github.com/CianHession" target="_blank">My GitHub</Button>
-
+                    <Button variant="primary" onClick={handleBackButtonClick}>
+                        Back to Fuelinator
+                    </Button>
+                    <Button variant="secondary" href="https://github.com/CianHession" target="_blank">
+                        My GitHub
+                    </Button>
                 </Col>
             </Row>
         </Container>
@@ -29,9 +54,7 @@ function About() {
 
 function AboutPage() {
     return (
-        <Routes>
-            <Route path="/" element={<About />} />
-        </Routes>
+        <About />
     );
 }
 
