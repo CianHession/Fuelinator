@@ -27,13 +27,12 @@ const fuelStationSchema = new mongoose.Schema({
 const FuelStation = mongoose.model('FuelStation', fuelStationSchema);
 
 fuelStations.forEach(station => {
-    const { name, address, latitude, longitude, rating, county } = station;
+    const { name, address, latitude, longitude, rating, county, petrolPrice, dieselPrice } = station;
 
     FuelStation.findOne({ name, address })
         .then(existingStation => {
             if (existingStation) { }
             else {
-                const { petrolPrice, dieselPrice } = station.prices;
                 const newStation = new FuelStation({
                     name,
                     address,
