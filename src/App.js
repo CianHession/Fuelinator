@@ -27,8 +27,8 @@ const authMiddleware = (req, res, next) => {
 
 const RedirectHome = () => {
     const isAuthenticated = localStorage.getItem('isAuthenticated');
-    if (isAuthenticated) {
-        return <Navigate to="/fuelinator" />;
+    if (isAuthenticated === 'true') {
+        return <Navigate to="/fuelinator" replace />;
     } else {
         return <Home />;
     }
