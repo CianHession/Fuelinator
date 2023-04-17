@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Fuelinator from './Fuelinator';
 import About from './About';
 import Navbar from './Navbar';
@@ -9,7 +9,7 @@ function App() {
         <BrowserRouter>
             <Navbar />
             <Routes>
-                <Route path="/" element={<Home />} />
+                <Route path="/" element={<RedirectHome />} />
                 <Route path="/fuelinator" element={<Fuelinator />} canActivate={[authMiddleware]} />
                 <Route path="/about" element={<About />} />
             </Routes>
@@ -25,4 +25,13 @@ const authMiddleware = (req, res, next) => {
     }
 }
 
-export default App
+const RedirectHome = () => {
+    const isAuthenticated = localStorage.getItem('isAuthenticated');
+    if (isAuthenticated) {
+        return <Navigate to="/fuelinator" />;
+    } else {
+        return <Home />;
+    }
+};
+
+export default App;
