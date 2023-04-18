@@ -1,15 +1,13 @@
 ﻿import React, { useState, useEffect } from "react";
 import { Map, Marker, InfoWindow } from "google-maps-react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { counties, irelandCoords } from "./Counties";
-
+import { irelandCoords } from "./Counties";
 import { useNavigate } from 'react-router-dom';
 
 function Fuelinator() {
     const [google, setGoogle] = useState(null);
     const [fuelStations, setFuelStations] = useState([]);
     const [selectedMarker, setSelectedMarker] = useState(null);
-    const [selectedCounty, setSelectedCounty] = useState(null);
     const [editMode, setEditMode] = useState(false);
     const navigate = useNavigate();
 
@@ -30,7 +28,6 @@ function Fuelinator() {
     const handleFormSubmit = async (event) => {
         event.preventDefault();
 
-        // Check if the prices are valid
         if (
             selectedMarker.petrolPrice < 0.99 ||
             selectedMarker.petrolPrice > 2.2 ||
@@ -126,7 +123,6 @@ function Fuelinator() {
     }, []);
 
     const renderMarkers = () => {
-        if (!selectedCounty) {
             return fuelStations.map((station) => {
                 const { _id, latitude, longitude, name, address, rating } = station;
                 return (
@@ -161,43 +157,6 @@ function Fuelinator() {
                     </Marker>
                 );
             });
-        } else {
-            return fuelStations
-                .filter((station) => station.county === selectedCounty)
-                .map((station) => {
-                    const { _id, latitude, longitude, name, address, rating } = station;
-                    return (
-                        <Marker
-                            key={_id}
-                            position={{ lat: latitude, lng: longitude }}
-                            name={name}
-                            address={address}
-                            rating={rating}
-                            onClick={() => handleMarkerClick(_id)}
-                            icon={{
-                                url: "https://raineycawthon.com/img/256px/7.png",
-                                scaledSize: new window.google.maps.Size(36, 36),
-                            }}
-                        >
-                            {selectedMarker && selectedMarker._id === _id && (
-                                <InfoWindow onCloseClick={() => setSelectedMarker(null)}>
-                                    <div>
-                                        <h2>{name}</h2>
-                                        <p>{address}</p>
-                                        {selectedMarker.petrolPrice && (
-                                            <p>{`Petrol Price: €${selectedMarker.petrolPrice}`}</p>
-                                        )}
-                                        {selectedMarker.dieselPrice && (
-                                            <p>{`Diesel Price: €${selectedMarker.dieselPrice}`}</p>
-                                        )}
-                                        <p>{`Rating: ${rating}`}</p>
-                                    </div>
-                                </InfoWindow>
-                            )}
-                        </Marker>
-                    );
-                });
-        }
     };
 
     return (
@@ -225,14 +184,6 @@ function Fuelinator() {
                 )}
             </div>
             <div>
-                <select className="custom-dropdown-menu" value={selectedCounty} onChange={(e) => setSelectedCounty(e.target.value)}>
-                    <option value="">Select County</option>
-                    {counties.map((county) => (
-                        <option key={county} value={county}>
-                            {county}
-                        </option>
-                    ))}
-                </select>
                 {selectedMarker && (
                     <div className="station-data">
                         <h2>{selectedMarker.name}</h2>
