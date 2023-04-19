@@ -43,6 +43,10 @@ img {
 .home-heading {
     margin: 2rem 0;
 }
+.register-button {
+    font-size: 1.2rem;
+    padding: 0.5rem 1rem;
+}
 
 .form-container {
     display: flex;
@@ -58,6 +62,31 @@ img {
     display: flex;
     flex-direction: column;
     margin-bottom: 1rem;
+}
+
+.form-container button[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.form-container .register-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    cursor: pointer;
+}
+
+.form-container .register-button a {
+        color: #007bff;
+        text-decoration: none;
 }
 
 label {
