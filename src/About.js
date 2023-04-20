@@ -32,7 +32,7 @@ function About() {
                 <Col>
                     <h2>About Fuelinator</h2>
                     <p>
-                        Fuelinator is a fuel tracking app that helps you find fuel stations for every county in Ireland, viewing user submitted fuel prices, allowing you to find prices before arriving!
+                        Fuelinator is a fuel tracking app that helps you find fuel stations for every county in Ireland, viewing user submitted fuel prices, allowing you to find prices before arriving and keeping the prices updated!
                     </p>
                     <p>
                         Fuelinator is free and open-sourced software, it's built using the latest web technologies, including React, Node.js,Firebase and MongoDB.
@@ -43,6 +43,7 @@ function About() {
                     <Button variant="primary" onClick={handleBackButtonClick}>
                         Back to Fuelinator
                     </Button>
+                    <br />
                     <Button variant="secondary" href="https://github.com/CianHession" target="_blank">
                         My GitHub
                     </Button>

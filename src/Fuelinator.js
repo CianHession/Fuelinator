@@ -49,6 +49,8 @@ function Fuelinator() {
             }
             setSelectedMarker(cheapestDieselStation);
         }
+
+        setShowCheapestDiesel(true);
     };
 
     const findCheapestPetrolPrice = () => {
@@ -74,6 +76,8 @@ function Fuelinator() {
             }
             setSelectedMarker(cheapestPetrolStation);
         }
+
+        setShowCheapestPetrol(true);
     };
 
     const handleFormSubmit = async (event) => {
@@ -327,7 +331,10 @@ function Fuelinator() {
                             New Diesel Price:
                             <input type="number" value={selectedMarker.dieselPrice} onChange={handleDieselPriceChange} />
                         </label>
-                        <button type="submit">Save</button>
+                        <br />
+                        <button className="btn" type="submit">Update Prices</button>
+                        <br />
+                        <button className="btn" onClick={() => setEditMode(false)}>Cancel Editing</button>
                     </form>
                 )}
             </div>
