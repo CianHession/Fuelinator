@@ -30,6 +30,19 @@ p {
     margin-bottom: 1.5rem;
 }
 
+.button-style {
+    background-color: green;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
 img {
     max-width: 100%;
     height: auto;
@@ -48,6 +61,15 @@ img {
     padding: 0.5rem 1rem;
 }
 
+.countySelect {
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+}#
 .form-container {
     display: flex;
     flex-direction: column;

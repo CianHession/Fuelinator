@@ -2,7 +2,6 @@
 import { Map, Marker, InfoWindow } from "google-maps-react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { counties, irelandCoords } from "./Counties";
-
 import { useNavigate } from 'react-router-dom';
 
 function Fuelinator() {
@@ -27,37 +26,54 @@ function Fuelinator() {
         });
     };
 
-
     const findCheapestDieselPrice = () => {
         let cheapestDieselPrice = Number.MAX_VALUE;
         let cheapestDieselStation = null;
 
-        for (let station of fuelStations) {
-            if (station.county === selectedCounty) {
+        if (selectedCounty) {
+            for (let station of fuelStations) {
+                if (station.county === selectedCounty) {
+                    if (station.dieselPrice < cheapestDieselPrice) {
+                        cheapestDieselPrice = station.dieselPrice;
+                        cheapestDieselStation = station;
+                    }
+                }
+            }
+            setSelectedMarker(cheapestDieselStation);
+        } else {
+            for (let station of fuelStations) {
                 if (station.dieselPrice < cheapestDieselPrice) {
                     cheapestDieselPrice = station.dieselPrice;
                     cheapestDieselStation = station;
                 }
             }
+            setSelectedMarker(cheapestDieselStation);
         }
-
-        setSelectedMarker(cheapestDieselStation);
     };
 
     const findCheapestPetrolPrice = () => {
         let cheapestPetrolPrice = Number.MAX_VALUE;
         let cheapestPetrolStation = null;
 
-        for (let station of fuelStations) {
-            if (station.county === selectedCounty) {
+        if (selectedCounty) {
+            for (let station of fuelStations) {
+                if (station.county === selectedCounty) {
+                    if (station.petrolPrice < cheapestPetrolPrice) {
+                        cheapestPetrolPrice = station.petrolPrice;
+                        cheapestPetrolStation = station;
+                    }
+                }
+            }
+            setSelectedMarker(cheapestPetrolStation);
+        } else {
+            for (let station of fuelStations) {
                 if (station.petrolPrice < cheapestPetrolPrice) {
                     cheapestPetrolPrice = station.petrolPrice;
                     cheapestPetrolStation = station;
                 }
             }
+            setSelectedMarker(cheapestPetrolStation);
         }
-
-        setSelectedMarker(cheapestPetrolStation);
     };
 
     const handleFormSubmit = async (event) => {
@@ -273,7 +289,7 @@ function Fuelinator() {
                 )}
             </div>
             <div>
-                <select className="custom-dropdown-menu" value={selectedCounty} onChange={(e) => setSelectedCounty(e.target.value)}>
+                <select style={{ display: "flex" }}  className="countySelect" value={selectedCounty} onChange={(e) => setSelectedCounty(e.target.value)}>
                     <option value="">Select County</option>
                     {counties.map((county) => (
                         <option key={county} value={county}>
@@ -282,8 +298,15 @@ function Fuelinator() {
                     ))}
                 </select>
                 <div>
-                    <button onClick={findCheapestDieselPrice}>Cheapest Diesel</button>
-                    <button onClick={findCheapestPetrolPrice}>Cheapest Petrol</button>
+                <p>Let's Save Money!</p>
+                </div>
+                <div style={{ display: "flex" }}>
+                    <button className="button-style" onClick={findCheapestDieselPrice}>
+                        {selectedCounty ? `Cheapest Diesel in ${selectedCounty}` : 'Cheapest Diesel in Ireland'}
+                    </button>
+                    <button className="button-style" onClick={findCheapestPetrolPrice}>
+                        {selectedCounty ? `Cheapest Petrol in ${selectedCounty}` : 'Cheapest Petrol in Ireland'}
+                    </button>
                 </div>
                 {selectedMarker && (
                     <div className="station-data">
@@ -291,18 +314,17 @@ function Fuelinator() {
                         <p>{selectedMarker.address}</p>
                         <p>{`Petrol Price: €${selectedMarker.petrolPrice}`}</p>
                         <p>{`Diesel Price: €${selectedMarker.dieselPrice}`}</p>
-                        <p>{`Rating: ${selectedMarker.rating}`}</p>
                         <button onClick={() => setEditMode(!editMode)}>Edit Fuel Prices</button>
                     </div>
                 )}
                 {editMode && (
                     <form onSubmit={handleFormSubmit} disabled={!editMode}>
                         <label>
-                            Petrol Price:
+                            New Petrol Price:
                             <input type="number" value={selectedMarker.petrolPrice} onChange={handlePetrolPriceChange} />
                         </label>
                         <label>
-                            Diesel Price:
+                            New Diesel Price:
                             <input type="number" value={selectedMarker.dieselPrice} onChange={handleDieselPriceChange} />
                         </label>
                         <button type="submit">Save</button>
