@@ -15,14 +15,14 @@ function Fuelinator() {
     const handlePetrolPriceChange = (event) => {
         setSelectedMarker({
             ...selectedMarker,
-            petrolPrice: event.target.value,
+            petrolPrice: Number(event.target.value).toFixed(2),
         });
     };
 
     const handleDieselPriceChange = (event) => {
         setSelectedMarker({
             ...selectedMarker,
-            dieselPrice: event.target.value,
+            dieselPrice: Number(event.target.value).toFixed(2),
         });
     };
 
@@ -49,8 +49,6 @@ function Fuelinator() {
             }
             setSelectedMarker(cheapestDieselStation);
         }
-
-        setShowCheapestDiesel(true);
     };
 
     const findCheapestPetrolPrice = () => {
@@ -76,8 +74,6 @@ function Fuelinator() {
             }
             setSelectedMarker(cheapestPetrolStation);
         }
-
-        setShowCheapestPetrol(true);
     };
 
     const handleFormSubmit = async (event) => {
