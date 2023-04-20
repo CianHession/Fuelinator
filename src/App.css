@@ -18,6 +18,55 @@
     padding: 1rem;
 }
 
+.contact-form {
+    background-color: #f4f4f4;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+    .contact-form h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+.form-group {
+    margin-bottom: 10px;
+}
+
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.1);
+        resize: vertical;
+    }
+
+    .form-group textarea {
+        height: 100px;
+    }
+
+.btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #0069D9;
+    color: #fff;
+    cursor: pointer;
+}
+
+    .btn:hover {
+        background-color: #005cbf;
+    }
+
 h2 {
     font-size: 3rem;
     font-weight: bold;

@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, fetchSignInMethodsForEmail, sendPasswordResetEmail } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -14,7 +14,8 @@ const firebaseConfig = {
     storageBucket: "fuelinator.appspot.com",
     messagingSenderId: "848724945799",
     appId: "1:848724945799:web:432e614e6b83b181eb4122",
-    measurementId: "G-DX0N482KPM"
+    measurementId: "G-DX0N482KPM",
+    databaseURL: "https://fuelinator-default-rtdb.europe-west1.firebasedatabase.app",
 };
 
 // Initialize Firebase

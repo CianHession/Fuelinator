@@ -3,6 +3,7 @@ import Fuelinator from './Fuelinator';
 import About from './About';
 import Navbar from './Navbar';
 import Home from './Home';
+import ContactForm from './ContactForm';
 
 function App() {
     return (
@@ -12,6 +13,7 @@ function App() {
                 <Route path="/" element={<RedirectHome />} />
                 <Route path="/fuelinator" element={<Fuelinator />} canActivate={[authMiddleware]} />
                 <Route path="/about" element={<About />} />
+                <Route path="/contact-us" element={<ContactForm />} />
             </Routes>
         </BrowserRouter>
     );
