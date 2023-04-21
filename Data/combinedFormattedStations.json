@@ -27,7 +27,7 @@
     "rating": 4,
     "county": "Antrim",
     "petrolPrice": 1.67,
-    "dieselPrice": 1.7
+    "dieselPrice": 1.70
   },
   {
     "name": "Riverside Fuels",
@@ -13476,8 +13476,8 @@
     "longitude": -8.7649428,
     "rating": 0,
     "county": "Galway",
-    "petrolPrice": 0,
-    "dieselPrice": 0
+    "petrolPrice": 1.3,
+    "dieselPrice": 2.1
   },
   {
     "name": "O'Grady's Service Station",

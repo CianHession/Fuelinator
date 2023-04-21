@@ -15,14 +15,14 @@ function Fuelinator() {
     const handlePetrolPriceChange = (event) => {
         setSelectedMarker({
             ...selectedMarker,
-            petrolPrice: Number(event.target.value).toFixed(2),
+            petrolPrice: Number(event.target.value),
         });
     };
 
     const handleDieselPriceChange = (event) => {
         setSelectedMarker({
             ...selectedMarker,
-            dieselPrice: Number(event.target.value).toFixed(2),
+            dieselPrice: Number(event.target.value),
         });
     };
 
@@ -289,7 +289,7 @@ function Fuelinator() {
                 )}
             </div>
             <div>
-                <select style={{ display: "flex" }}  className="countySelect" value={selectedCounty} onChange={(e) => setSelectedCounty(e.target.value)}>
+                <select style={{ display: "flex" }} className="countySelect" value={selectedCounty} onChange={(e) => setSelectedCounty(e.target.value)}>
                     <option value="">Select County</option>
                     {counties.map((county) => (
                         <option key={county} value={county}>
@@ -298,7 +298,7 @@ function Fuelinator() {
                     ))}
                 </select>
                 <div>
-                <p>Let's Save Money!</p>
+                    <p>Let's Save Money!</p>
                 </div>
                 <div style={{ display: "flex" }}>
                     <button className="button-style" onClick={findCheapestDieselPrice}>
@@ -337,4 +337,5 @@ function Fuelinator() {
         </div>
     );
 }
+
 export default Fuelinator;

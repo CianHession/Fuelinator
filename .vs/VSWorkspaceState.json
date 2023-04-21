@@ -2,9 +2,10 @@
   "ExpandedNodes": [
     "",
     "\\BackEnd",
+    "\\Data",
     "\\public",
     "\\src"
   ],
-  "SelectedNode": "\\src\\index.js",
+  "SelectedNode": "\\Data\\combinedFormattedStations.json",
   "PreviewInSolutionExplorer": false
 }
