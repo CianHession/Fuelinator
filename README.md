@@ -55,7 +55,7 @@ Now we can begin using Fuelinator!
 # Launching Fuelinator.
 Since we are already in the Fuelinator folder inside the command prompt terminal we need to run the following commands:
 
-<b> npm install --force</b> <i>Note: --force is needed due to packages not being supported of newer versions of React</i> <br>
+<b> npm install --force</b> <i>Note: --force is needed due to some packages not being supported for newer versions of React</i> <br>
 <b> npm start</b>
 
 The inital install, which downloads required packages that Fuelinator uses, should take a while to complete, but it is important to note that you only need to run this command once on the first ever install of the application, after the install is complete you only need to run the second command to use it.
@@ -63,6 +63,6 @@ The inital install, which downloads required packages that Fuelinator uses, shou
 And That's it!, after a few seconds Fuelinator will launch in your browser and you can start saving money!
 
 <hr>
-Screencast <a href="https://atlantictu-my.sharepoint.com/:v:/r/personal/g00379799_atu_ie/Documents/screen-capture%201.webm?csf=1&web=1&e=lu8aOh">Here</a>
+Screencast <a href="https://youtu.be/rbnP2_Pg78A">Here</a>
 
 Please leave me feedback at my email if you have any suggestions or questions.
